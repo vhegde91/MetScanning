@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Demo")
-isMC=False
+isMC=True
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
@@ -13,15 +13,16 @@ process.source = cms.Source("PoolSource",
 #'file:pickevents_DM_17Spet_BadMuon.root',
 #'file:pickevents_DM_PromptRecoD_BadMuon.root'
 #'file:/user/amkalsi/MetFilterStudy/ECALDead/CMSSW_10_2_13/src/MetScanning/skim/python/crab_projects_Data_v1/16963797-0937-E811-ABE2-008CFAE45134.root'
-                                    'root://xrootd-cms.infn.it///store/data/Run2018A/JetHT/MINIAOD/UL2018_MiniAODv2-v1/260000/00B87525-94D1-C741-9B03-00528106D15A.root'
+                                    # 'root://xrootd-cms.infn.it///store/data/Run2018A/JetHT/MINIAOD/UL2018_MiniAODv2-v1/260000/00B87525-94D1-C741-9B03-00528106D15A.root'
+                                    'root://xrootd-cms.infn.it///store/relval/CMSSW_12_1_0_pre4/RelValQCD_FlatPt_15_3000HS_14/MINIAODSIM/121X_mcRun3_2021_realistic_v10_TkmkFitHighStat-v2/10000/399513c5-45d4-4a52-934d-4c2fe2627f45.root'
 #'file:RunD_ecalBadScfilter_JetHTD.root',
         )
                             )
 
 process.TFileService = cms.Service("TFileService", fileName = cms.string("output.root") )
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-process.GlobalTag.globaltag="106X_dataRun2_v35"
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+process.GlobalTag.globaltag="121X_mcRun3_2021_realistic_v10"
 # process.GlobalTag.globaltag="106X_upgrade2018_realistic_v15_L1v1"
 #process.GlobalTag.globaltag="102X_upgrade2018_realistic_v15"
 
@@ -143,27 +144,6 @@ process.BadPFMuonFilterUpdateDz=BadPFMuonDzFilter.clone(
 
 from PhysicsTools.PatAlgos.tools.helpers import getPatAlgosToolsTask
 patAlgosToolsTask = getPatAlgosToolsTask(process)
-
-from CommonTools.PileupAlgos.customizePuppiTune_cff import UpdatePuppiTuneV15
-
-from RecoJets.JetProducers.ak4PFJets_cfi import ak4PFJets
-process.ak4PuppiJets  = ak4PFJets.clone (src = 'puppi', doAreaFastjet = True, jetPtMin = 2.)
-from PhysicsTools.PatAlgos.tools.jetTools import addJetCollection                                                                                                    
-addJetCollection(process,labelName = 'Puppi', jetSource = cms.InputTag('ak4PuppiJets'), algo = 'AK', rParam=0.4, genJetCollection=cms.InputTag('slimmedGenJets'), jetCorrections = ('AK4PFPuppi', ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'], 'None'),pfCandidates = cms.InputTag('packedPFCandidates'),                                                                                                     
-                 pvSource = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                 svSource = cms.InputTag('slimmedSecondaryVertices'),
-                 muSource =cms.InputTag( 'slimmedMuons'),
-                 elSource = cms.InputTag('slimmedElectrons'),
-                 genParticles= cms.InputTag('prunedGenParticles'),
-                 getJetMCFlavour=isMC
-)
-process.patJetsPuppi.addGenPartonMatch = cms.bool(isMC)
-process.patJetsPuppi.addGenJetMatch = cms.bool(isMC)
-
-patAlgosToolsTask.add(process.ak4PuppiJets)
-UpdatePuppiTuneV15(process,isMC)
-process.ApplyPatAlgos  = cms.Path(process.patAlgosToolsTask)
-
 
 #import FWCore.PythonUtilities.LumiList as LumiList
 #import FWCore.ParameterSet.Types as CfgTypes
