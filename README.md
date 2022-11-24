@@ -1,26 +1,22 @@
 # MetScanning
-For recent instruction please visit: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETScanners
+For recent recommendations please visit: https://twiki.cern.ch/twiki/bin/view/CMS/MissingETScanners
 ## Install
 ```
 export SCRAM_ARCH=slc7_amd64_gcc700
-cmsrel CMSSW_10_6_28
-cd CMSSW_10_6_28/src/
+cmsrel CMSSW_12_4_4
+cd CMSSW_12_4_4/src/
 cmsenv
 git cms-init
 git cms-addpkg RecoMET/METFilters
-git clone https://github.com/vhegde91/MetScanning.git
-
+git clone -b Run2022_12_4_4 https://github.com/vhegde91/MetScanning.git
   
 cd $CMSSW_BASE/src/
 
 scram b -j10
 
-For UL 2017 use following file
-
-  cmsRun MetScanning/skim/test/skimMINIAOD_UL2017.py
-  
-  
-  ```
+cmsRun MetScanning/skim/test/skimMINIAOD_Run3.py
+ 
+```
   You might need to run the following command if you want to access files via XROOT:
 ```
   voms-proxy-init --voms cms

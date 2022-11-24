@@ -18,5 +18,6 @@
   <use   name="DataFormats/BeamSpot"/>
   <use   name="DataFormats/EgammaCandidates"/>
   <use   name="DataFormats/EgammaReco"/>
+  <use   name="SimDataFormats/GeneratorProducts"/>
   <flags   EDM_PLUGIN="1"/>
 </library>

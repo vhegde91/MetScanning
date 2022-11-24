@@ -133,7 +133,7 @@ class METScanningNtupleMakerMINIAOD : public edm::one::EDAnalyzer<edm::one::Shar
 		edm::EDGetTokenT<pat::PackedCandidateCollection> pfcandsToken_;
 
 		edm::EDGetTokenT<std::vector< pat::MET> > metToken_;
-		edm::EDGetTokenT<std::vector< pat::MET> > puppimetToken_;
+                edm::EDGetTokenT<std::vector< pat::MET> > puppimetToken_;
 		edm::EDGetTokenT<pat::ElectronCollection> electronToken_;
 		edm::EDGetTokenT<pat::MuonCollection> muonToken_;
 		edm::EDGetTokenT<edm::TriggerResults> trgresultsToken_;
@@ -143,7 +143,7 @@ class METScanningNtupleMakerMINIAOD : public edm::one::EDAnalyzer<edm::one::Shar
 
 
 		//Some histos to be saved for simple checks 
-		TH1F *h_PFMet, *h_PuppiMet, *h_nvtx, *h_leadjetpt;
+                TH1F *h_PFMet, *h_PuppiMet, *h_nvtx, *h_leadjetpt, *h_CaloMet;
 		TH1F *h_PFMet_num[N_METFilters], *h_PuppiMet_num[N_METFilters], *h_nvtx_num[N_METFilters], *h_leadjetpt_num[N_METFilters];
 		TH2F *h_jet200etavsphi_fail[N_METFilters];
                 TH1F *h_tot_gen_weights_1, *h_tot_gen_weights_2;
@@ -231,6 +231,8 @@ class METScanningNtupleMakerMINIAOD : public edm::one::EDAnalyzer<edm::one::Shar
 		double _met_phi;
 		double _puppimet;
 		double _puppimet_phi;
+                double _calomet;
+		double _calomet_phi;
   
                 int _number_jets_pt25_delphiMET;
 		int _number_jets_pt25;
@@ -374,6 +376,7 @@ METScanningNtupleMakerMINIAOD::METScanningNtupleMakerMINIAOD(const edm::Paramete
 	h_nvtx  = fs->make<TH1F>("h_nvtx" , "Number of reco vertices (MET>200);N_{vtx};Events"  ,    100, 0., 100.);
 	h_PFMet  = fs->make<TH1F>("h_PFMet" , "Type 1 PFMET (GeV);Type 1 PFMET (GeV);Events"  ,    1000, 0., 5000.);
 	h_PuppiMet  = fs->make<TH1F>("h_PuppiMet" , "PUPPI MET (GeV);PUPPI MET (GeV);Events"  ,    1000, 0., 5000.);
+	h_CaloMet  = fs->make<TH1F>("h_CaloMet" , "CaloMET (GeV);CaloMET (GeV);Events"  ,    1000, 0., 5000.);
 	h_leadjetpt  = fs->make<TH1F>("h_leadjetpt" , "Leading jet p_T (GeV);p_{T} (leading jet) (GeV) (MET<100);Events"  ,    1000, 0., 5000.);
 
 	for(int i =0; i< N_METFilters;i++){
@@ -676,6 +679,10 @@ METScanningNtupleMakerMINIAOD::analyze(const edm::Event& iEvent, const edm::Even
 	_met = pfmet->pt();
 	_met_phi = pfmet->phi();
 
+	//CaloMET
+	_calomet = pfmet->caloMETPt();
+	_calomet_phi = pfmet->caloMETPhi();
+	
 
 	double leadjetpt (0.);
 	int number_jets_pt25 = 0;
@@ -754,6 +761,7 @@ METScanningNtupleMakerMINIAOD::analyze(const edm::Event& iEvent, const edm::Even
 	//For effcy vs MET: 
 	h_PFMet->Fill(_met);
 	h_PuppiMet->Fill(_puppimet);
+	h_CaloMet->Fill(_calomet);
 	for(int i = 0; i< N_METFilters ;i++){
 		if( GetIdxFilterDecision(i) ){
 			h_PFMet_num[i]->Fill(_met);
@@ -866,6 +874,8 @@ METScanningNtupleMakerMINIAOD::beginJob()
 	outputTree->Branch("_met_phi", &_met_phi, "_met_phi/D");
 	outputTree->Branch("_puppimet", &_puppimet, "_puppimet/D");
 	outputTree->Branch("_puppimet_phi", &_puppimet_phi, "_puppimet_phi/D");
+	outputTree->Branch("_calomet", &_calomet, "_calomet/D");
+	outputTree->Branch("_calomet_phi", &_calomet_phi, "_calomet_phi/D");
 
 	outputTree->Branch("_number_jets_pt25", &_number_jets_pt25);
 	outputTree->Branch("_number_jets_pt25_delphiMET", &_number_jets_pt25_delphiMET);
