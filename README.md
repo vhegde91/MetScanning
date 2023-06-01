@@ -3,18 +3,18 @@ For recent recommendations please visit: https://twiki.cern.ch/twiki/bin/view/CM
 ## Install
 ```
 export SCRAM_ARCH=slc7_amd64_gcc700
-cmsrel CMSSW_12_4_4
-cd CMSSW_12_4_4/src/
+cmsrel CMSSW_13_1_0
+cd CMSSW_13_1_0/src/
 cmsenv
 git cms-init
 git cms-addpkg RecoMET/METFilters
-git clone -b Run2022_12_4_4 https://github.com/vhegde91/MetScanning.git
+git clone -b Run2023_13_1_0 https://github.com/vhegde91/MetScanning.git
   
 cd $CMSSW_BASE/src/
 
 scram b -j10
 
-cmsRun MetScanning/skim/test/skimMINIAOD_Run3.py
+cmsRun MetScanning/skim/test/skimMINIAOD_Run2023.py
  
 ```
   You might need to run the following command if you want to access files via XROOT:

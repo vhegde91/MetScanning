@@ -1,6 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process("Demo")
+from Configuration.Eras.Era_Run3_cff import Run3
+process = cms.Process("Demo", Run3)
 isMC=False
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
@@ -10,7 +11,10 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5000) )
 process.source = cms.Source("PoolSource",
                                 # replace 'myfile.root' with the source file you want to use
                                 fileNames = cms.untracked.vstring(
-'root://cms-xrd-global.cern.ch//store/data/Run2022C/EGamma/MINIAOD/PromptReco-v1/000/355/869/00000/6f9ce205-d2bd-4662-b961-6804defdf3f7.root'
+# 'root://cms-xrd-global.cern.ch//store/data/Run2022C/EGamma/MINIAOD/PromptReco-v1/000/355/869/00000/6f9ce205-d2bd-4662-b961-6804defdf3f7.root'
+# 'root://cms-xrd-global.cern.ch//store/data/Run2023B/EGamma1/MINIAOD/PromptReco-v1/000/366/403/00000/68f59530-7cc6-4205-867a-79317a880a89.root'
+'root://cms-xrd-global.cern.ch//store/data/Run2023C/EGamma1/MINIAOD/PromptReco-v1/000/367/094/00000/3550c878-fa9a-4ee1-955e-15f6d7c4355a.root'
+# 'file:/eos/cms/store/group/phys_exotica/dijet/Dijet13TeV/ilias/event_displays/pickevents_unphysical_event_no1_appearsInPUPPIandCHS.root'
 #'file:RunD_ecalBadScfilter_JetHTD.root',
         )
                             )
@@ -19,7 +23,9 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string("output
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 # process.GlobalTag.globaltag="124X_dataRun3_Prompt_v4"
-process.GlobalTag.globaltag="121X_mcRun3_2021_realistic_v10"
+# process.GlobalTag.globaltag="121X_mcRun3_2021_realistic_v10"
+# process.GlobalTag.globaltag="124X_dataRun3_v11"
+process.GlobalTag.globaltag="130X_dataRun3_Prompt_v3"
 # process.GlobalTag.globaltag="106X_upgrade2018_realistic_v15_L1v1"
 #process.GlobalTag.globaltag="102X_upgrade2018_realistic_v15"
 

@@ -8,7 +8,8 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+//#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 
@@ -88,7 +89,8 @@ struct BadRuns {
         unsigned long event_Bad;
 };
 
-class METScanningNtupleMaker : public edm::EDAnalyzer {
+/* class METScanningNtupleMaker : public edm::EDAnalyzer { */
+class METScanningNtupleMaker : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 	public:
 
 		explicit METScanningNtupleMaker(const edm::ParameterSet&);
